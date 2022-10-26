@@ -3,19 +3,54 @@
     margin: 0;
     box-sizing: border-box;
 }
-.farm {
-    width: 100%;
-    height: 100vh;
+.main {
     background-image:url('./assets/chaman.jpg');
+    height: 1000px;
+    width: 100%;
+}
+#farm {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 30px 10px 10px ;
+    align-items: flex-start;
+    gap: 0;
 }
-.animal {
-    width: 50px;
-    height: 50px;
-    background-image:url('./assets/sheep.png');
-    background-size:cover;
+#farm > div {
+    position: relative;
+}
+.animal-el {
+    width: 70px;
+    height: 70px;
     border-radius: 20px;
+    margin: 10px;
+    position: relative;
 }
+#farm > div div {
+    width: 70px;
+    height: 30px;
+    border-radius: 10px;
+    background: #fff;
+    position: absolute;
+    top: -29px;
+    left: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    color: blueviolet;
+}
+#farm > div div::after {
+    content: '';
+    position: absolute;
+    border-right: 10px solid #fff;
+    border-bottom: 10px solid transparent;
+    border-top: 10px solid transparent;
+    top: 25px;
+    transform: rotate(-90deg);
+
+}
+
