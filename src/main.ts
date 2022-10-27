@@ -14,47 +14,48 @@ class Animal {
         this._src = src;
         this._soundText = 'not sound';
         this._id = id;
-    }
+    };
     set sounder(arg:boolean) {
         this._sounding = arg;
-    }
+    };
     silent(animalTarget:Animal) {
         let currentSoundElement = document.querySelector(`.sound-tx-${animalTarget._id}`)
-        currentSoundElement != null &&  currentSoundElement.remove()
+        currentSoundElement != null &&  currentSoundElement.remove();
         //log
-        console.log(`${this._type}:${this._id} is silent`)
-    }
+        console.log(`${this._type}:${this._id} is silent`);
+    };
     displaySound(animalTarget:Animal):void {
-        console.log('display sound')
-    }
-}
+        console.log('display sound');
+    };
+};
 //extended classes
 class Sheep extends Animal{
     constructor(id:number) {
         super('sheep',id,'assets/sheep.png');
         this._soundText = "Baaaaa...";
     }
-}
+};
 class Cow extends Animal {
     constructor(id:number) {
         super('cow',id,'assets/cow.png');
         this._soundText = "Maaaaa...";
-    }
-}
+    };
+};
 class Dog extends Animal{
     constructor(id:number) {
         super('dog', id, 'assets/dog.png');
         this._soundText = "Hopppp...";
-    }
-}
+    };
+};
 
-async function printAnimal(){
+async function printAnimal(j:number){
     return new Promise(resolve => {
         setTimeout(() => {
-            resolve
+            resolve('m')
         },2000)
+
     })
-}
+};
 //genearating animals
 class AnimalGenertor {
     _totalAnimals : Animal[];

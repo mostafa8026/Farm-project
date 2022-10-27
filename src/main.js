@@ -19,19 +19,24 @@ class Animal {
         this._soundText = 'not sound';
         this._id = id;
     }
+    ;
     set sounder(arg) {
         this._sounding = arg;
     }
+    ;
     silent(animalTarget) {
         let currentSoundElement = document.querySelector(`.sound-tx-${animalTarget._id}`);
         currentSoundElement != null && currentSoundElement.remove();
         //log
         console.log(`${this._type}:${this._id} is silent`);
     }
+    ;
     displaySound(animalTarget) {
         console.log('display sound');
     }
+    ;
 }
+;
 //extended classes
 class Sheep extends Animal {
     constructor(id) {
@@ -39,27 +44,33 @@ class Sheep extends Animal {
         this._soundText = "Baaaaa...";
     }
 }
+;
 class Cow extends Animal {
     constructor(id) {
         super('cow', id, 'assets/cow.png');
         this._soundText = "Maaaaa...";
     }
+    ;
 }
+;
 class Dog extends Animal {
     constructor(id) {
         super('dog', id, 'assets/dog.png');
         this._soundText = "Hopppp...";
     }
+    ;
 }
-function printAnimal() {
+;
+function printAnimal(j) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise(resolve => {
             setTimeout(() => {
-                resolve;
+                resolve('m');
             }, 2000);
         });
     });
 }
+;
 //genearating animals
 class AnimalGenertor {
     constructor() {
