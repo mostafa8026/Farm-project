@@ -18,8 +18,11 @@ class Animal {
     set sounder(arg:boolean) {
         this._sounding = arg;
     }
-    silent(animalTarget:Animal):void {
-        console.log('silent')
+    silent(animalTarget:Animal) {
+        let currentSoundElement = document.querySelector(`.sound-tx-${animalTarget._id}`)
+        currentSoundElement != null &&  currentSoundElement.remove()
+        //log
+        console.log(`${this._type}:${this._id} is silent`)
     }
     displaySound(animalTarget:Animal):void {
         console.log('display sound')
@@ -31,44 +34,11 @@ class Sheep extends Animal{
         super('sheep',id,'assets/sheep.png');
         this._soundText = "Baaaaa...";
     }
-    silent(animalTarget:Animal) {
-        let currentSoundElement = document.querySelector(`.sound-tx-${animalTarget._id}`)
-        currentSoundElement != null &&  currentSoundElement.remove()
-        //log
-        console.log(`${this._type}:${this._id} is silent`)
-    }
-    displaySound(animalTarget:Animal):void {
-        if (animalTarget._sounding) {
-            let targetElement = document.getElementById(`${animalTarget._id}`)
-            let soundElement = document.createElement('div')
-            soundElement.setAttribute('class',`sound-tx-${animalTarget._id}`)
-            soundElement.innerText = animalTarget._soundText;
-            if(targetElement != null) {
-                targetElement.appendChild(soundElement)
-            }
-        }
-    }
 }
 class Cow extends Animal {
     constructor(id:number) {
         super('cow',id,'assets/cow.png');
         this._soundText = "Maaaaa...";
-    }
-    silent(animalTarget:Animal) {
-        let currentSoundElement = document.querySelector(`.sound-tx-${animalTarget._id}`)
-        currentSoundElement != null &&  currentSoundElement.remove()
-        console.log(`${this._type}:${this._id} is silent CCC`)
-    }
-    displaySound(animalTarget:Animal):void {
-        if (animalTarget._sounding) {
-            let targetElement = document.getElementById(`${animalTarget._id}`)
-            let soundElement = document.createElement('div')
-            soundElement.setAttribute('class',`sound-tx-${animalTarget._id}`)
-            soundElement.innerText = animalTarget._soundText;
-            if(targetElement != null) {
-                targetElement.appendChild(soundElement)
-            }
-        }
     }
 }
 class Dog extends Animal{
@@ -76,23 +46,14 @@ class Dog extends Animal{
         super('dog', id, 'assets/dog.png');
         this._soundText = "Hopppp...";
     }
-    silent(animalTarget:Animal) {
-        let currentSoundElement = document.querySelector(`.sound-tx-${animalTarget._id}`)
-        currentSoundElement != null &&  currentSoundElement.remove()
-        //log
-        console.log(`${this._type}:${this._id} is silent`)
-    }
-    displaySound(animalTarget:Animal):void {
-        if (animalTarget._sounding) {
-            let targetElement = document.getElementById(`${animalTarget._id}`)
-            let soundElement = document.createElement('div')
-            soundElement.setAttribute('class',`sound-tx-${animalTarget._id}`)
-            soundElement.innerText = animalTarget._soundText;
-            if(targetElement != null) {
-                targetElement.appendChild(soundElement)
-            }
-        }
-    }
+}
+
+async function printAnimal(){
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve
+        },2000)
+    })
 }
 //genearating animals
 class AnimalGenertor {
@@ -117,13 +78,13 @@ class AnimalGenertor {
     get totalAnimalGS():Animal[] {
         return this._totalAnimals
     }
-    addAnimalsToFarm(animalsList:Animal[]):void {
-        for (let j: number = 0; j < animalsList.length; j++) {
+    printAnimals():void {
+        for(let j: number = 0; j < this._totalAnimals.length; j++) {
             setTimeout(() => {
                 let imageAnimal: Element = document.createElement("img")
                 let animalElement: Element = document.createElement("div")
-                animalElement.setAttribute('id',`${animalsList[j]._id}`)
-                imageAnimal.setAttribute('src', `${animalsList[j]._src}`)
+                animalElement.setAttribute('id',`${this._totalAnimals[j]._id}`)
+                imageAnimal.setAttribute('src', `${this._totalAnimals[j]._src}`)
                 imageAnimal.setAttribute('class', 'animal-el')
                 animalElement.appendChild(imageAnimal)
                 if (farmElement) {
@@ -132,25 +93,24 @@ class AnimalGenertor {
             },j * 20)
         }
     }
-    soundChanging(animalsList:Animal[]):void {
+    soundChanging():void {
         setInterval(() => {
-            let randomNumber:number =Math.floor(Math.random() * animalsList.length - 1)
-            animalsList[randomNumber].sounder = true;
-            console.log(animalsList[randomNumber]);
-            animalsList[randomNumber].displaySound(animalsList[randomNumber])
+            let randomNumber:number =Math.floor(Math.random() * this._totalAnimals.length - 1)
+            this._totalAnimals[randomNumber].sounder = true;
+            console.log(this._totalAnimals[randomNumber]);
+            this._totalAnimals[randomNumber].displaySound(this._totalAnimals[randomNumber])
             setTimeout(() => {
-                animalsList[randomNumber].sounder = false;
-                animalsList[randomNumber].silent(animalsList[randomNumber]);
+                this._totalAnimals[randomNumber].sounder = false;
+                this._totalAnimals[randomNumber].silent(this._totalAnimals[randomNumber]);
             },12000)
         },1200)
     }
 }
 window.addEventListener("DOMContentLoaded",() => {
     let generalAnimals:AnimalGenertor = new AnimalGenertor()
-    let animals:Animal[] = generalAnimals.totalAnimalGS
     generalAnimals.generateAnimal()
     generalAnimals.totalAnimalGS
-    generalAnimals.addAnimalsToFarm(animals)
-    generalAnimals.soundChanging(animals)
+    generalAnimals.printAnimals()
+    generalAnimals.soundChanging()
 
 })
