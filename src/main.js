@@ -1,101 +1,186 @@
 "use strict";
-class Animal {
-    constructor(type, id, src) {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+//the farm :)
+var farmElement = document.getElementById('farm');
+//base //parent class
+var Animal = /** @class */ (function () {
+    function Animal(type, id, src) {
         this._sounding = false;
         this._type = type;
         this._src = src;
         this._soundText = 'not sound';
         this._id = id;
-        switch (type) {
-            case 'sheep':
-                this._soundText = 'baaa...';
-                break;
-            case 'cow':
-                this._soundText = 'mooooo...';
-                break;
-            case 'dog':
-                this._soundText = 'hoppp...';
-                break;
-        }
     }
-    set sounder(arg) {
-        this._sounding = arg;
+    Object.defineProperty(Animal.prototype, "sounder", {
+        set: function (arg) {
+            this._sounding = arg;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Animal.prototype.silent = function (animalTarget) {
+        console.log('silent');
+    };
+    Animal.prototype.displaySound = function (animalTarget) {
+        console.log('display sound');
+    };
+    return Animal;
+}());
+//extended classes
+var Sheep = /** @class */ (function (_super) {
+    __extends(Sheep, _super);
+    function Sheep(id) {
+        var _this = _super.call(this, 'sheep', id, 'assets/sheep.png') || this;
+        _this._soundText = "Baaaaa...";
+        return _this;
     }
-}
-class Sheep extends Animal {
-    constructor(id) {
-        super('sheep', id, 'assets/sheep.png');
-    }
-}
-class Cow extends Animal {
-    constructor(id) {
-        super('cow', id, 'assets/cow.png');
-    }
-}
-class Dog extends Animal {
-    constructor(id) {
-        super('dog', id, 'assets/dog.png');
-    }
-}
-let animals = [];
-function animalGenerator(animals) {
-    for (let i = 0; i < 128; i++) {
-        let rand = Math.random();
-        if (rand === 0 || rand <= 0.5) {
-            animals.push(new Sheep(i));
-        }
-        else if (rand > 0.5 && rand < 0.8) {
-            animals.push(new Cow(i));
-        }
-        else if (rand >= 0.8) {
-            animals.push(new Dog(i));
-        }
-    }
-    console.log(animals);
-}
-let farmElement = document.getElementById('farm');
-function addAnimalsToFarm(animalsList) {
-    console.log(farmElement);
-    for (let j = 0; j < animalsList.length; j++) {
-        setTimeout(() => {
-            let imageAnimal = document.createElement("img");
-            let animalElement = document.createElement("div");
-            animalElement.setAttribute('id', `${animalsList[j]._id}`);
-            imageAnimal.setAttribute('src', `${animalsList[j]._src}`);
-            imageAnimal.setAttribute('class', 'animal-el');
-            animalElement.appendChild(imageAnimal);
-            if (farmElement) {
-                farmElement.appendChild(animalElement);
+    Sheep.prototype.silent = function (animalTarget) {
+        var currentSoundElement = document.querySelector(".sound-tx-" + animalTarget._id);
+        currentSoundElement != null && currentSoundElement.remove();
+        //log
+        console.log(this._type + ":" + this._id + " is silent");
+    };
+    Sheep.prototype.displaySound = function (animalTarget) {
+        if (animalTarget._sounding) {
+            var targetElement = document.getElementById("" + animalTarget._id);
+            var soundElement = document.createElement('div');
+            soundElement.setAttribute('class', "sound-tx-" + animalTarget._id);
+            soundElement.innerText = animalTarget._soundText;
+            if (targetElement != null) {
+                targetElement.appendChild(soundElement);
             }
-        }, j * 20);
+        }
+    };
+    return Sheep;
+}(Animal));
+var Cow = /** @class */ (function (_super) {
+    __extends(Cow, _super);
+    function Cow(id) {
+        var _this = _super.call(this, 'cow', id, 'assets/cow.png') || this;
+        _this._soundText = "Maaaaa...";
+        return _this;
     }
-}
-function randomSoundingChanger(animalsList) {
-    setInterval(() => {
-        let randomNumber = Math.floor(Math.random() * animalsList.length - 1);
-        animalsList[randomNumber].sounder = true;
-        console.log(animalsList[randomNumber]);
-        soundElementAppender(animalsList[randomNumber]);
-        setTimeout(() => {
-            animalsList[randomNumber].sounder = false;
-            soundElementDeleter(animalsList[randomNumber]);
-        }, 12000);  }, 1200);
-}
-function soundElementAppender(animalTarget) {
-    if (animalTarget._sounding) {
-        let targetElement = document.getElementById(`${animalTarget._id}`);
-        let soundElement = document.createElement('div');
-        soundElement.setAttribute('class', `sound-tx-${animalTarget._id}`);
-        soundElement.innerText = animalTarget._soundText;
-        targetElement.appendChild(soundElement);
+    Cow.prototype.silent = function (animalTarget) {
+        var currentSoundElement = document.querySelector(".sound-tx-" + animalTarget._id);
+        currentSoundElement != null && currentSoundElement.remove();
+        console.log(this._type + ":" + this._id + " is silent CCC");
+    };
+    Cow.prototype.displaySound = function (animalTarget) {
+        if (animalTarget._sounding) {
+            var targetElement = document.getElementById("" + animalTarget._id);
+            var soundElement = document.createElement('div');
+            soundElement.setAttribute('class', "sound-tx-" + animalTarget._id);
+            soundElement.innerText = animalTarget._soundText;
+            if (targetElement != null) {
+                targetElement.appendChild(soundElement);
+            }
+        }
+    };
+    return Cow;
+}(Animal));
+var Dog = /** @class */ (function (_super) {
+    __extends(Dog, _super);
+    function Dog(id) {
+        var _this = _super.call(this, 'dog', id, 'assets/dog.png') || this;
+        _this._soundText = "Hopppp...";
+        return _this;
     }
-}
-function soundElementDeleter(animalTarget) {
-    let currentSoundElement = document.querySelector(`.sound-tx-${animalTarget._id}`);
-    currentSoundElement.remove();
-}
-window.addEventListener("DOMContentLoaded", () => {
-    animalGenerator(animals);
-    addAnimalsToFarm(animals);
-    randomSoundingChanger(animals);
+    Dog.prototype.silent = function (animalTarget) {
+        var currentSoundElement = document.querySelector(".sound-tx-" + animalTarget._id);
+        currentSoundElement != null && currentSoundElement.remove();
+        //log
+        console.log(this._type + ":" + this._id + " is silent");
+    };
+    Dog.prototype.displaySound = function (animalTarget) {
+        if (animalTarget._sounding) {
+            var targetElement = document.getElementById("" + animalTarget._id);
+            var soundElement = document.createElement('div');
+            soundElement.setAttribute('class', "sound-tx-" + animalTarget._id);
+            soundElement.innerText = animalTarget._soundText;
+            if (targetElement != null) {
+                targetElement.appendChild(soundElement);
+            }
+        }
+    };
+    return Dog;
+}(Animal));
+//genearating animals
+var AnimalGenertor = /** @class */ (function () {
+    function AnimalGenertor() {
+        this._totalAnimals = [];
+    }
+    ;
+    AnimalGenertor.prototype.generateAnimal = function () {
+        for (var i = 0; i < 128; i++) {
+            var rand = Math.random();
+            if (rand === 0 || rand <= 0.5) {
+                this._totalAnimals.push(new Sheep(i));
+            }
+            else if (rand > 0.5 && rand < 0.8) {
+                this._totalAnimals.push(new Cow(i));
+            }
+            else if (rand >= 0.8) {
+                this._totalAnimals.push(new Dog(i));
+            }
+        }
+    };
+    ;
+    Object.defineProperty(AnimalGenertor.prototype, "totalAnimalGS", {
+        get: function () {
+            return this._totalAnimals;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AnimalGenertor.prototype.addAnimalsToFarm = function (animalsList) {
+        var _loop_1 = function (j) {
+            setTimeout(function () {
+                var imageAnimal = document.createElement("img");
+                var animalElement = document.createElement("div");
+                animalElement.setAttribute('id', "" + animalsList[j]._id);
+                imageAnimal.setAttribute('src', "" + animalsList[j]._src);
+                imageAnimal.setAttribute('class', 'animal-el');
+                animalElement.appendChild(imageAnimal);
+                if (farmElement) {
+                    farmElement.appendChild(animalElement);
+                }
+            }, j * 20);
+        };
+        for (var j = 0; j < animalsList.length; j++) {
+            _loop_1(j);
+        }
+    };
+    AnimalGenertor.prototype.soundChanging = function (animalsList) {
+        setInterval(function () {
+            var randomNumber = Math.floor(Math.random() * animalsList.length - 1);
+            animalsList[randomNumber].sounder = true;
+            console.log(animalsList[randomNumber]);
+            animalsList[randomNumber].displaySound(animalsList[randomNumber]);
+            setTimeout(function () {
+                animalsList[randomNumber].sounder = false;
+                animalsList[randomNumber].silent(animalsList[randomNumber]);
+            }, 12000);
+        }, 1200);
+    };
+    return AnimalGenertor;
+}());
+window.addEventListener("DOMContentLoaded", function () {
+    var generalAnimals = new AnimalGenertor();
+    var animals = generalAnimals.totalAnimalGS;
+    generalAnimals.generateAnimal();
+    generalAnimals.totalAnimalGS;
+    generalAnimals.addAnimalsToFarm(animals);
+    generalAnimals.soundChanging(animals);
 });
