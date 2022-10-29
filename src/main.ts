@@ -24,8 +24,17 @@ class Animal {
         //log
         console.log(`${this._type}:${this._id} is silent`);
     };
-    displaySound(animalTarget:Animal):void {
-        console.log('display sound');
+    displaySound():void {
+        if (this._sounding) {
+            let targetElement = document.getElementById(`${this._id}`)
+            let soundElement = document.createElement('div')
+            soundElement.setAttribute('class', `sound-tx-${this._id}`)
+            soundElement.innerText = this._soundText;
+            if( targetElement  !== null) {
+                targetElement.appendChild(soundElement)
+            }
+
+        }
     };
 };
 //extended classes
@@ -79,19 +88,27 @@ class AnimalGenertor {
     get totalAnimalGS():Animal[] {
         return this._totalAnimals
     }
-    printAnimals():void {
+    async printAnimals() {
         for(let j: number = 0; j < this._totalAnimals.length; j++) {
-            setTimeout(() => {
-                let imageAnimal: Element = document.createElement("img")
-                let animalElement: Element = document.createElement("div")
-                animalElement.setAttribute('id',`${this._totalAnimals[j]._id}`)
-                imageAnimal.setAttribute('src', `${this._totalAnimals[j]._src}`)
-                imageAnimal.setAttribute('class', 'animal-el')
-                animalElement.appendChild(imageAnimal)
-                if (farmElement) {
-                    farmElement.appendChild(animalElement)
-                }
-            },j * 20)
+            function premissionPrint() {
+                return new Promise(resolve => {
+                    setInterval(() => {
+                        resolve(true)
+                    },200)
+                })
+            }
+            await premissionPrint()
+            let imageAnimal: Element = document.createElement("img")
+            let animalElement: Element = document.createElement("div")
+            animalElement.setAttribute('id',`${this._totalAnimals[j]._id}`)
+            imageAnimal.setAttribute('src', `${this._totalAnimals[j]._src}`)
+            animalElement.setAttribute('id',`${this._totalAnimals[j]._id}`)
+            imageAnimal.setAttribute('src', `${this._totalAnimals[j]._src}`)
+            imageAnimal.setAttribute('class', 'animal-el')
+            animalElement.appendChild(imageAnimal)
+            if (farmElement) {
+                farmElement.appendChild(animalElement)
+            }
         }
     }
     soundChanging():void {
@@ -99,7 +116,7 @@ class AnimalGenertor {
             let randomNumber:number =Math.floor(Math.random() * this._totalAnimals.length - 1)
             this._totalAnimals[randomNumber].sounder = true;
             console.log(this._totalAnimals[randomNumber]);
-            this._totalAnimals[randomNumber].displaySound(this._totalAnimals[randomNumber])
+            this._totalAnimals[randomNumber].displaySound()
             setTimeout(() => {
                 this._totalAnimals[randomNumber].sounder = false;
                 this._totalAnimals[randomNumber].silent(this._totalAnimals[randomNumber]);
