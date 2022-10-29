@@ -105,14 +105,14 @@ class AnimalGenertor {
     }
     printAnimals() {
         return __awaiter(this, void 0, void 0, function* () {
+            function premissionPrint() {
+                return new Promise(resolve => {
+                    setInterval(() => {
+                        resolve(true);
+                    }, 200);
+                });
+            }
             for (let j = 0; j < this._totalAnimals.length; j++) {
-                function premissionPrint() {
-                    return new Promise(resolve => {
-                        setInterval(() => {
-                            resolve(true);
-                        }, 200);
-                    });
-                }
                 yield premissionPrint();
                 let imageAnimal = document.createElement("img");
                 let animalElement = document.createElement("div");

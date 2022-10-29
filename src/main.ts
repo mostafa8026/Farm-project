@@ -89,14 +89,15 @@ class AnimalGenertor {
         return this._totalAnimals
     }
     async printAnimals() {
+        function premissionPrint() {
+            return new Promise(resolve => {
+                setInterval(() => {
+                    resolve(true)
+                },200)
+            })
+        }
         for(let j: number = 0; j < this._totalAnimals.length; j++) {
-            function premissionPrint() {
-                return new Promise(resolve => {
-                    setInterval(() => {
-                        resolve(true)
-                    },200)
-                })
-            }
+
             await premissionPrint()
             let imageAnimal: Element = document.createElement("img")
             let animalElement: Element = document.createElement("div")
