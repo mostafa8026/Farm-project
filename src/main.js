@@ -50,8 +50,10 @@ class Sheep extends Animal {
     constructor(id) {
         super('sheep', id, 'assets/sheep.png');
         this._soundText = "Baaaaa...";
+        Sheep._sheepCount++;
     }
 }
+Sheep._sheepCount = 0;
 ;
 class Cow extends Animal {
     constructor(id) {
@@ -69,16 +71,6 @@ class Dog extends Animal {
     ;
 }
 ;
-function printAnimal(j) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve('m');
-            }, 2000);
-        });
-    });
-}
-;
 //genearating animals
 class AnimalGenertor {
     constructor() {
@@ -88,8 +80,9 @@ class AnimalGenertor {
     generateAnimal() {
         for (let i = 0; i < 128; i++) {
             let rand = Math.random();
-            if (rand === 0 || rand <= 0.5) {
+            if (rand === 0 || rand <= 0.5 && Sheep._sheepCount < 50) {
                 this._totalAnimals.push(new Sheep(i));
+                // console.log(Sheep._sheepCount)
             }
             else if (rand > 0.5 && rand < 0.8) {
                 this._totalAnimals.push(new Cow(i));
@@ -109,7 +102,7 @@ class AnimalGenertor {
                 return new Promise(resolve => {
                     setInterval(() => {
                         resolve(true);
-                    }, 200);
+                    }, 20);
                 });
             }
             for (let j = 0; j < this._totalAnimals.length; j++) {
@@ -147,4 +140,13 @@ window.addEventListener("DOMContentLoaded", () => {
     generalAnimals.totalAnimalGS;
     generalAnimals.printAnimals();
     generalAnimals.soundChanging();
+    try {
+        aadalert("Deed");
+    }
+    catch (err) {
+        console.log('error found');
+    }
+    finally {
+        alert('salam');
+    }
 });
