@@ -1,5 +1,29 @@
 //the farm :)
-let farmElement:Element | null = document.getElementById('farm')
+let farmElement:Element | null = document.getElementById('farm');
+//helper functions
+function premissionPrint(model:string) {
+    switch (model) {
+        case'loop':
+            return new Promise(resolve => {
+                setInterval(() => {
+                    resolve(true)
+                },20)
+            })
+        case'once':
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve(true)
+                },5000)
+            })
+        default:
+            return new Promise(resolve => {
+                setInterval(() => {
+                    resolve(true)
+                },20)
+            })
+    }
+}
+
 //interfaces
 interface changePositionArgument {
     bool:boolean
@@ -30,7 +54,7 @@ abstract class  Animal {
         let currentSoundElement = document.querySelector(`.sound-tx-${animalTarget._id}`)
         currentSoundElement != null &&  currentSoundElement.remove();
         //log
-        console.log(`${this._type}:${this._id} is silent`);
+        // console.log(`${this._type}:${this._id} is silent`);
     };
     displaySound():void {
         if (this._sounding) {
@@ -101,20 +125,10 @@ class AnimalGenertor {
         return this._totalAnimals
     }
     async printAnimals() {
-        function premissionPrint() {
-            return new Promise(resolve => {
-                setInterval(() => {
-                    resolve(true)
-                },20)
-            })
-        }
         for(let j:number =0; j < this._totalAnimals.length; j++) {
-
-            await premissionPrint()
+            await premissionPrint('loop')
             let imageAnimal: Element = document.createElement("img")
             let animalElement: Element = document.createElement("div")
-            animalElement.setAttribute('id',`${this._totalAnimals[j]._id}`)
-            imageAnimal.setAttribute('src', `${this._totalAnimals[j]._src}`)
             animalElement.setAttribute('id',`${this._totalAnimals[j]._id}`)
             imageAnimal.setAttribute('src', `${this._totalAnimals[j]._src}`)
             imageAnimal.setAttribute('class', 'animal-el')
@@ -128,7 +142,7 @@ class AnimalGenertor {
         setInterval(() => {
             let randomNumber: number = Math.floor(Math.random() * this._totalAnimals.length - 1)
             this._totalAnimals[randomNumber].changePosition = {bool: true, fieldName: '_sounding'};
-            console.log(this._totalAnimals[randomNumber]);
+            // console.log(this._totalAnimals[randomNumber]);
             this._totalAnimals[randomNumber].displaySound()
             setTimeout(() => {
                 this._totalAnimals[randomNumber].changePosition = {bool: false, fieldName: '_sounding'};
@@ -139,14 +153,36 @@ class AnimalGenertor {
     foodChanging():void {
         setInterval(() => {
             let randomNumber:number =Math.floor(Math.random() * this._totalAnimals.length - 1)
-            this._totalAnimals[randomNumber].changePosition = {bool:true,fieldName:'_fooding'};
-            console.log(this._totalAnimals[randomNumber]);
-            this._totalAnimals[randomNumber].displayFood()
-            setTimeout(() => {
-                this._totalAnimals[randomNumber].changePosition = {bool:false,fieldName:'_fooding'};
-                this._totalAnimals[randomNumber].silent(this._totalAnimals[randomNumber]);
-            },18000)
+            if (!this._totalAnimals[randomNumber]._fooding) {
+                this._totalAnimals[randomNumber].changePosition = {bool:true,fieldName:'_fooding'};
+                // console.log(this._totalAnimals[randomNumber]);
+                this._totalAnimals[randomNumber].displayFood()
+            }
         },2000)
+    }
+    async fooder(event:Event) {
+
+            const targetElement = (event.target as HTMLInputElement)
+            let targetId:number = Number(targetElement?.parentElement?.id)
+            // console.log(targetElement?.parentElement?.children)
+
+            let animalTarget:Animal|undefined = this._totalAnimals.find(animal => animal._id == targetId)
+            if(animalTarget?._fooding) {
+
+                console.log(document.querySelector(`.food-tx-${targetId}`)?.firstElementChild?.src)
+                console.log(animalTarget)
+                console.log(document.querySelector(`.food-tx-${targetId}`))
+                console.log((event.target as HTMLInputElement).parentElement)
+                document.querySelector(`.food-tx-${targetId}`)?.firstElementChild.src = 'assets/timer.gif';
+            }
+            await premissionPrint('once')
+            document.querySelector(`.food-tx-${targetId}`)?.remove()
+
+
+        // console.log(animalTarget)
+            // console.log(targetId)
+        //
+
     }
 }
 window.addEventListener("DOMContentLoaded",() => {
@@ -155,4 +191,9 @@ window.addEventListener("DOMContentLoaded",() => {
     generalAnimals.printAnimals()
     generalAnimals.soundChanging()
     generalAnimals.foodChanging()
+    farmElement?.addEventListener('click',(event) => {
+        generalAnimals.fooder(event)
+    })
+
 })
+
