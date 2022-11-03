@@ -54,7 +54,7 @@ class Animal {
         let currentSoundElement = document.querySelector(`.sound-tx-${animalTarget._id}`);
         currentSoundElement != null && currentSoundElement.remove();
         //log
-        // console.log(`${this._type}:${this._id} is silent`);
+        console.log(`${this._type}:${this._id} is silent`);
     }
     ;
     displaySound() {
@@ -153,7 +153,7 @@ class AnimalGenertor {
         setInterval(() => {
             let randomNumber = Math.floor(Math.random() * this._totalAnimals.length - 1);
             this._totalAnimals[randomNumber].changePosition = { bool: true, fieldName: '_sounding' };
-            // console.log(this._totalAnimals[randomNumber]);
+            console.log(this._totalAnimals[randomNumber]);
             this._totalAnimals[randomNumber].displaySound();
             setTimeout(() => {
                 this._totalAnimals[randomNumber].changePosition = { bool: false, fieldName: '_sounding' };
@@ -166,27 +166,26 @@ class AnimalGenertor {
             let randomNumber = Math.floor(Math.random() * this._totalAnimals.length - 1);
             if (!this._totalAnimals[randomNumber]._fooding) {
                 this._totalAnimals[randomNumber].changePosition = { bool: true, fieldName: '_fooding' };
-                // console.log(this._totalAnimals[randomNumber]);
+                console.log(this._totalAnimals[randomNumber]);
                 this._totalAnimals[randomNumber].displayFood();
             }
         }, 2000);
     }
     fooder(event) {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
             const targetElement = event.target;
             let targetId = Number((_a = targetElement === null || targetElement === void 0 ? void 0 : targetElement.parentElement) === null || _a === void 0 ? void 0 : _a.id);
-            // console.log(targetElement?.parentElement?.children)
+            console.log((_b = targetElement === null || targetElement === void 0 ? void 0 : targetElement.parentElement) === null || _b === void 0 ? void 0 : _b.children);
             let animalTarget = this._totalAnimals.find(animal => animal._id == targetId);
             if (animalTarget === null || animalTarget === void 0 ? void 0 : animalTarget._fooding) {
-                console.log((_c = (_b = document.querySelector(`.food-tx-${targetId}`)) === null || _b === void 0 ? void 0 : _b.firstElementChild) === null || _c === void 0 ? void 0 : _c.src);
                 console.log(animalTarget);
                 console.log(document.querySelector(`.food-tx-${targetId}`));
-                console.log(event.target.parentElement);
-                (_d = document.querySelector(`.food-tx-${targetId}`)) === null || _d === void 0 ? void 0 : _d.firstElementChild.src = 'assets/timer.gif';
+                let foodImg = (_c = document.querySelector(`.food-tx-${targetId}`)) === null || _c === void 0 ? void 0 : _c.firstElementChild;
+                foodImg === null || foodImg === void 0 ? void 0 : foodImg.src = 'assets/timer.gif';
             }
             yield premissionPrint('once');
-            (_e = document.querySelector(`.food-tx-${targetId}`)) === null || _e === void 0 ? void 0 : _e.remove();
+            (_d = document.querySelector(`.food-tx-${targetId}`)) === null || _d === void 0 ? void 0 : _d.remove();
         });
     }
 }

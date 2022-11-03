@@ -54,7 +54,7 @@ abstract class  Animal {
         let currentSoundElement = document.querySelector(`.sound-tx-${animalTarget._id}`)
         currentSoundElement != null &&  currentSoundElement.remove();
         //log
-        // console.log(`${this._type}:${this._id} is silent`);
+        console.log(`${this._type}:${this._id} is silent`);
     };
     displaySound():void {
         if (this._sounding) {
@@ -142,7 +142,7 @@ class AnimalGenertor {
         setInterval(() => {
             let randomNumber: number = Math.floor(Math.random() * this._totalAnimals.length - 1)
             this._totalAnimals[randomNumber].changePosition = {bool: true, fieldName: '_sounding'};
-            // console.log(this._totalAnimals[randomNumber]);
+            console.log(this._totalAnimals[randomNumber]);
             this._totalAnimals[randomNumber].displaySound()
             setTimeout(() => {
                 this._totalAnimals[randomNumber].changePosition = {bool: false, fieldName: '_sounding'};
@@ -155,7 +155,7 @@ class AnimalGenertor {
             let randomNumber:number =Math.floor(Math.random() * this._totalAnimals.length - 1)
             if (!this._totalAnimals[randomNumber]._fooding) {
                 this._totalAnimals[randomNumber].changePosition = {bool:true,fieldName:'_fooding'};
-                // console.log(this._totalAnimals[randomNumber]);
+                console.log(this._totalAnimals[randomNumber]);
                 this._totalAnimals[randomNumber].displayFood()
             }
         },2000)
@@ -164,25 +164,17 @@ class AnimalGenertor {
 
             const targetElement = (event.target as HTMLInputElement)
             let targetId:number = Number(targetElement?.parentElement?.id)
-            // console.log(targetElement?.parentElement?.children)
-
+            console.log(targetElement?.parentElement?.children)
             let animalTarget:Animal|undefined = this._totalAnimals.find(animal => animal._id == targetId)
             if(animalTarget?._fooding) {
-
-                console.log(document.querySelector(`.food-tx-${targetId}`)?.firstElementChild?.src)
                 console.log(animalTarget)
                 console.log(document.querySelector(`.food-tx-${targetId}`))
-                console.log((event.target as HTMLInputElement).parentElement)
-                document.querySelector(`.food-tx-${targetId}`)?.firstElementChild.src = 'assets/timer.gif';
+                let foodImg:Element | null | undefined = document.querySelector(`.food-tx-${targetId}`)?.firstElementChild;
+                foodImg?.src = 'assets/timer.gif';
+
             }
             await premissionPrint('once')
             document.querySelector(`.food-tx-${targetId}`)?.remove()
-
-
-        // console.log(animalTarget)
-            // console.log(targetId)
-        //
-
     }
 }
 window.addEventListener("DOMContentLoaded",() => {
